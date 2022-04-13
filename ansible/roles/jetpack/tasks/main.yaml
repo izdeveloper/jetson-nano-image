@@ -1,0 +1,37 @@
+---
+- name: Add Jetpack Repository Key
+  apt_key:
+    url: http://repo.download.nvidia.com/jetson/jetson-ota-public.asc
+
+- name: Add Jetpack Common Repository
+  apt_repository:
+    repo: deb http://repo.download.nvidia.com/jetson/common r32.4 main
+    state: present
+
+- name: Add Jetpack T210 Repository
+  apt_repository:
+    repo: deb http://repo.download.nvidia.com/jetson/t210 r32.4 main
+    state: present
+
+- name: Install Jetpack
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - nvidia-cuda
+    - nvidia-opencv
+    - nvidia-cudnn8
+    - nvidia-tensorrt
+    - nvidia-l4t-multimedia
+    # - nvidia-l4t-jetson-multimedia-api  # Install on real device only
+
+# Depends: nvidia-cuda (= 4.4.1-b50)
+# Depends: nvidia-opencv (= 4.4.1-b50)
+# Depends: nvidia-cudnn8 (= 4.4.1-b50)
+# Depends: nvidia-tensorrt (= 4.4.1-b50)
+# Depends: nvidia-visionworks (= 4.4.1-b50)
+# Depends: nvidia-container (= 4.4.1-b50)
+# Depends: nvidia-vpi (= 4.4.1-b50)
+# Depends: nvidia-l4t-jetson-multimedia-api (>> 32.4-0)
+# Depends: nvidia-l4t-jetson-multimedia-api (<< 32.5-0)
+  

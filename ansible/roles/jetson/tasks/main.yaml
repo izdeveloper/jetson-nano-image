@@ -38,8 +38,6 @@
     - libegl1
     - libegl1-mesa
     - libgtk-3-0
-    - python2
-    - python-is-python2
     - libgstreamer1.0-0
     - libgstreamer-plugins-bad1.0-0
 
@@ -108,7 +106,7 @@
     url: https://bootstrap.pypa.io/get-pip.py
     dest: /tmp/get-pip.py
 
-- name: Install pip
-  shell: python3 /tmp/get-pip.py --user
-  become: yes
-  become_user: "{{ new_user.name }}"
+# - name: Install pip
+#   shell: python3 /tmp/get-pip.py --user
+#   become: yes
+#   become_user: "{{ new_user.name }}"

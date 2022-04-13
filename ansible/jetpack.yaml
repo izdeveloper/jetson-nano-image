@@ -1,0 +1,6 @@
+---
+- name: Installing jetpack
+  hosts: jetson
+  connection: chroot
+  roles:
+    - jetpack
