@@ -1,7 +1,7 @@
 ---
-- name: Add Jetpack Repository Key
-  apt_key:
-    url: http://repo.download.nvidia.com/jetson/jetson-ota-public.asc
+# - name: Add Jetpack Repository Key
+#   apt_key:
+#     url: http://repo.download.nvidia.com/jetson/jetson-ota-public.asc
 
 - name: Add Jetpack Common Repository
   apt_repository:

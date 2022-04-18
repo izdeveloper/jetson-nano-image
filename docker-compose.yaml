@@ -5,6 +5,9 @@ services:
     stdin_open: true
     tty: true
     command: /bin/bash
+    privileged: true
     volumes:
-      - ./ansible:/scripts/ansible
       - ./output:/output
+      # - ./ansible:/scripts/ansible
+      # - ./build:/builddir
+

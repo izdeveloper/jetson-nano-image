@@ -6,8 +6,7 @@
 
 set -e
 
-# BSP=https://developer.nvidia.com/embedded/l4t/r32_release_v7.1/t210/jetson-210_linux_r32.4.2_aarch64.tbz2
-BSP=https://developer.nvidia.com/embedded/L4T/r32_Release_v4.2/t210ref_release_aarch64/Tegra210_Linux_R32.4.2_aarch64.tbz2
+
 
 # Check if the user is not root
 if [ "x$(whoami)" != "xroot" ]; then
@@ -47,15 +46,17 @@ if [ ! "$(ls -A $JETSON_BUILD_DIR)" ]; then
 fi
 
 cp -rp $JETSON_ROOTFS_DIR/*  $JETSON_BUILD_DIR/Linux_for_Tegra/rootfs/ > /dev/null
+rm -rf $JETSON_BUILD_DIR/Linux_for_Tegra/rootfs/dev
+mkdir -p $JETSON_BUILD_DIR/Linux_for_Tegra/rootfs/dev
 
 printf "Applying patches...   "
-patch $JETSON_BUILD_DIR/Linux_for_Tegra/nv_tegra/nv-apply-debs.sh < patches/nv-apply-debs.diff > /dev/null
+# patch $JETSON_BUILD_DIR/Linux_for_Tegra/nv_tegra/nv-apply-debs.sh < patches/nv-apply-debs.diff > /dev/null
 printf "[OK]\n"
 
 pushd $JETSON_BUILD_DIR/Linux_for_Tegra/ > /dev/null
 
 printf "Extract L4T...        "
-./apply_binaries.sh &> /dev/null
+./apply_binaries.sh 
 popd > /dev/null
 printf "[OK]\n"
 
@@ -64,18 +65,18 @@ pushd $JETSON_BUILD_DIR/Linux_for_Tegra/tools > /dev/null
 case "$JETSON_NANO_BOARD" in
     jetson-nano-2gb)
         printf "Create image for Jetson nano 2GB board... "
-        ./jetson-disk-image-creator.sh -o jetson.img -b jetson-nano-2gb-devkit &> /dev/null
+        ./jetson-disk-image-creator.sh -o jetson.img -b jetson-nano-2gb-devkit 
         popd > /dev/null
-        cp $JETSON_BUILD_DIR/Linux_for_Tegra/tools/jetson.img . > /dev/null
+        mv $JETSON_BUILD_DIR/Linux_for_Tegra/tools/jetson.img . > /dev/null
         printf "[OK]\n"
         ;;
 
     jetson-nano)
         nano_board_revision=${JETSON_NANO_REVISION:=300}
         printf "Creating image for Jetson nano board (%s revision)... " $nano_board_revision
-        ./jetson-disk-image-creator.sh -o jetson.img -b jetson-nano -r $nano_board_revision &> /dev/null
+        ./jetson-disk-image-creator.sh -o jetson.img -b jetson-nano -r $nano_board_revision 
         popd > /dev/null
-        cp $JETSON_BUILD_DIR/Linux_for_Tegra/tools/jetson.img . > /dev/null
+        mv $JETSON_BUILD_DIR/Linux_for_Tegra/tools/jetson.img . > /dev/null
         printf "[OK]\n"
         ;;
 
